@@ -1,0 +1,13 @@
+scipy
+numpy
+statsmodels
+boto3
+BPTK-Py
+sklearn
+pyzmq>=17
+tornado
+jupyterlab
+elasticsearch
+keras
+tensorflow
+nodejs

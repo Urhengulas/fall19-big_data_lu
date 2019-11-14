@@ -1,0 +1,141 @@
+{
+   "CARMODEL": {
+      "type": "abm",
+      "name": "auto",
+      "model": "src.models.simulation_model.SimulationModel",
+      "scenarios": {
+         "scenario": {
+            "runspecs": {
+               "starttime": 0,
+               "stoptime": 2000,
+               "dt": 1.0
+            },
+            "agents": [
+               {
+                  "name": "CONTROLLER",
+                  "count": 1,
+                  "step": 1,
+                  "properties": {
+                     "finished": {
+                        "type": "Integer",
+                        "value": 0
+                     },
+                     "customer_average_waiting_time": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "max_orders_per_round": {
+                        "type": "Integer",
+                        "value": 1
+                     }
+                  }
+               },
+               {
+                  "name": "CAR",
+                  "count": 3,
+                  "step": 1,
+                  "properties": {
+                     "revenue_in_order": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "charge_threshold": {
+                        "type": "Double",
+                        "value": 0.264
+                     },
+                     "optimal_vector": {
+                        "type": "Vector",
+                        "value": [
+                           0.0,
+                           0.0,
+                           0.0
+                        ]
+                     },
+                     "revenue": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "total_cost": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "total_revenue": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "cost": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "cost_per_period_driving": {
+                        "type": "Double",
+                        "value": 0.3
+                     },
+                     "price_per_period_driving": {
+                        "type": "Double",
+                        "value": 0.4
+                     },
+                     "cost_per_period_waiting": {
+                        "type": "Double",
+                        "value": 0.2
+                     },
+                     "cost_per_repair": {
+                        "type": "Double",
+                        "value": 1.0
+                     },
+                     "design_capacity": {
+                        "type": "Double",
+                        "value": 400
+                     },
+                     "capacity": {
+                        "type": "Double",
+                        "value": 400
+                     },
+                     "charge": {
+                        "type": "Double",
+                        "value": 400
+                     },
+                     "cycles": {
+                        "type": "Integer",
+                        "value": 0
+                     },
+                     "temperature": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "distance_since_sale": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "distance_in_period": {
+                        "type": "Double",
+                        "value": 0.0
+                     },
+                     "age": {
+                        "type": "Integer",
+                        "value": 0
+                     },
+                     "battery_state": {
+                        "type": "Integer",
+                        "value": 1
+                     },
+                    "pos_x":{
+                        "type":"Integer",
+                        "value": 0
+                    },
+                    "pos_y":{
+                        "type":"Integer",
+                        "value": 0
+                    },
+                    "current_state":{
+                        "type":"String",
+                        "value":"WAITING"
+                    }
+                  }
+               }
+            ],
+            "properties": []
+         }
+      }
+   }
+}

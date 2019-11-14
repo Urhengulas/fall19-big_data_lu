@@ -1,0 +1,60 @@
+version: '3.6'
+
+networks:
+  bdn:
+
+services:
+  elasticsearch_node1:
+    container_name: es_node1
+    image: elasticsearch:7.4.1
+    ports:
+      - 9201:9200
+    networks:
+      - bdn
+    environment:
+      - node.name=es_node1
+      - node.master=true
+      - node.data=true
+      - cluster.initial_master_nodes=es_node1,es_node2
+      - cluster.name=showcase_cluster
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.seed_hosts=es_node2
+
+  elasticsearch_node2:
+      container_name: es_node2
+      image: elasticsearch:7.4.1
+      ports:
+        - 9202:9200
+      networks:
+        - bdn
+      environment:
+        - node.name=es_node2
+        - node.master=true
+        - node.data=true
+        - cluster.initial_master_nodes=es_node1,es_node2
+        - cluster.name=showcase_cluster
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - discovery.seed_hosts=es_node1
+
+  kibana:
+      container_name: kibana
+      image: kibana:7.4.1
+      ports:
+        - 5601:5601
+      networks:
+        - bdn
+      environment:
+        - ELASTICSEARCH_HOSTS=["http://es_node1:9200","http://es_node2:9200"]
+
+  jupyter_showcase:
+      container_name: showcase
+      image: bigdata_showcase:latest
+      build:
+        context: .
+      ports:
+        - 8888:8888
+      networks:
+        - bdn
+      volumes:
+        - ./notebooks:/showcase_big_data/notebooks/
+        - ./src:/showcase_big_data/src
