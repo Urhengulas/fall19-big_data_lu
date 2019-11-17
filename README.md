@@ -33,8 +33,7 @@
 
     * From the stack monitoring page, go into the nodes page - this shows you how the shards are distributed over the nodes
     * Add a third ES node: ```docker run -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "node.name=es_node3" -e "node.master=false" -e "node.data=true" -e "discovery.seed_hosts=es_node1,es_node2" -e "cluster.name=showcase_cluster" --network showcase_big_data_bdn --name es_node3 -p 9203:9200 elasticsearch:7.4.1```
-a
-    * Stop that node: ```docker stop es_node3``` and see what happens to the replica shards (remove the container with docker rm es_node3)
+    * Stop that node: ```docker stop es_node3``` and see what happens to the replica shards (you can now remove the container with ```docker rm es_node3```)
 
     * Reset all containers (```docker-compose down``` followed by ```docker-compose up```)  and now start the simulation with 10 cars (change the config in JupyterLab ```/scenarios/abm.json``` before starting the simulation: ```CARMODEL.scenarios.scenario.agents[car].count:10```). See how many shards there are now.
 
