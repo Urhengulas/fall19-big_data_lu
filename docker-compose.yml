@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.7'
 
 networks:
   bdn:
@@ -48,13 +48,10 @@ services:
 
   jupyter_showcase:
       container_name: showcase
-      image: bigdata_showcase:latest
-      build:
-        context: .
+      image: transentis/bptk-py:0.9.0
       ports:
         - 8888:8888
       networks:
         - bdn
       volumes:
-        - ./notebooks:/showcase_big_data/notebooks/
-        - ./src:/showcase_big_data/src
+          - ./bptk-py:/bptk-py
