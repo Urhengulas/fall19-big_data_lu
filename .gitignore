@@ -1,4 +1,5 @@
-bptk-py/csv/*.pickle
+bptk-py/csv/*
+bptk-py/models/*
 .ipynb_checkpoints
 __pycache__
 bptk-py/bptk_py.log
