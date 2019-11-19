@@ -256,6 +256,10 @@ class car(Agent):
 
         elif self.state == "DRIVING":
 
+            if self.route == []:
+                        self.state = "WAITING"
+                        return
+            
             self.charge -= 1
             self.revenue_in_order += self.revenue
 
