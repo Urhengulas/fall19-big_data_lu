@@ -29,21 +29,6 @@ class ElasticsearchDataCollector:
 
         self.es = Elasticsearch([{'host': 'es_node1', 'port': port}])
 
-       # self.statistics_buffer = []
-       # self.running = True
-
-       # def send_statistics():
-       #     while self.running:
-       #         if len(self.statistics_buffer) > 1000:
-       #             print("Sending Data")
-       #             res = helpers.bulk(self.es, self.statistics_buffer, chunk_size=1000, request_timeout=200)
-       #         self.statistics_buffer = []
-       #         sleep(1)
-
-       # self.sender = Thread(target=send_statistics, args=())
-       # self.sender.start()
-
-
     def record_event(self, time, event):
         """
         Record an event

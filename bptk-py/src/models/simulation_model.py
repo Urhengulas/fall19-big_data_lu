@@ -1,3 +1,4 @@
+import pickle
 from BPTK_Py import Model, Agent
 from BPTK_Py.abm.datacollectors import CSVDataCollector
 from src.datacollectors import ElasticsearchDataCollector
@@ -32,6 +33,18 @@ class SimulationModel(Model):
         self.simple_grid = GRID
 
         self.time = starttime
+        
+        # initialize the time pickle
+        
+        with open("csv/sim_time.pickle",'wb') as my_file_obj:
+            pickle.dump(self.time,my_file_obj)   
+        
+        # the following are needed to track when we last dumped the current simulation time
+        
+        self.last_write_time = starttime
+        self.time_delta=1440
+
+        
         self.static_agents = {}
 
         super().__init__(starttime, stoptime, dt, name, scheduler, data_collector)
@@ -97,5 +110,14 @@ class SimulationModel(Model):
         scheduler = self.scheduler
         scheduler.run_step(model=self, sim_round=self.time, step=self.dt, progress_widget=None, collect_data=True)
         used_cells = []
+        
+        # write the current sim time into a pickle
+
+        if(self.time>=self.last_write_time+self.time_delta):
+            self.last_write_time+=self.time_delta
+            with open("csv/sim_time.pickle",'wb') as time_file_obj:
+                pickle.dump(self.time,time_file_obj)   
+
+                
         self.time += 1
 
