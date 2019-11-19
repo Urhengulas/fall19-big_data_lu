@@ -1,5 +1,5 @@
 from BPTK_Py import Agent, Event
-from collections import deque
+
 from copy import deepcopy
 import random
 from src.config.conf import streets
@@ -255,6 +255,10 @@ class car(Agent):
 
 
         elif self.state == "DRIVING":
+
+            if self.route == []:
+                self.state = "WAITING"
+                return
 
             self.charge -= 1
             self.revenue_in_order += self.revenue

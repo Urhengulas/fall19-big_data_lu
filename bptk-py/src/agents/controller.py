@@ -79,7 +79,6 @@ class controller(Agent):
     def act(self, time, round_no, step_no):
 
         if time % 1000 == 0 and time > 0:
-
             self.__train_model()
 
 
