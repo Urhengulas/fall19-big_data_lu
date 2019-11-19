@@ -75,8 +75,8 @@ class SimulationModel(Model):
 
     def instantiate_model(self):
 
-        #self.data_collector = ElasticsearchDataCollector()
-        self.data_collector = CSVDataCollector(prefix="csv/")
+        self.data_collector = ElasticsearchDataCollector()
+        #self.data_collector = CSVDataCollector(prefix="csv/")
         self.register_agent_factory("CONTROLLER",
                                     lambda agent_id, model, properties: controller(agent_id=agent_id, model=model,
                                                                                    properties=properties,
