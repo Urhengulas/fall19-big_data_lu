@@ -1,8 +1,6 @@
-import pickle
 from BPTK_Py import Model, Agent
-#from BPTK_Py.abm.datacollectors import CSVDataCollector
+from BPTK_Py.abm.datacollectors import CSVDataCollector
 from src.datacollectors import ElasticsearchDataCollector
-from src.visualization.space import Grid
 from src.agents import car, controller
 from src.agents.static_agents import destination
 
@@ -17,11 +15,6 @@ class SimulationModel(Model):
         :param data_collector: Instance of DataCollector)
         """
 
-        from src.config.conf import height, width
-
-
-
-        self.grid = Grid(height, width, torus=False)
 
         from src.config.conf import chargers, workshops, width, height,streets
         GRID = [[0 for y in range(0, width)] for i in range(0, height)]
@@ -39,17 +32,6 @@ class SimulationModel(Model):
         self.simple_grid = GRID
 
         self.time = starttime
-        
-        # initialize the time pickle
-        
-        with open("csv/sim_time.pickle",'wb') as my_file_obj:
-            pickle.dump(self.time,my_file_obj)   
-        
-        # the following are needed to track when we last dumped the current simulation time
-        
-        self.last_write_time = starttime
-        self.time_delta=1440
-        
         self.static_agents = {}
 
         super().__init__(starttime, stoptime, dt, name, scheduler, data_collector)
@@ -75,11 +57,9 @@ class SimulationModel(Model):
         self.agent_type_map[agent_type].append(agent.id)
 
     def remove_destination(self, destination):
-
         try:
             dest = self.static_agents.pop(tuple(destination))
 
-            self.grid.remove_agent(dest)
         except: # In case its a charger or workshop..
             pass
 
@@ -92,12 +72,11 @@ class SimulationModel(Model):
 
         self.static_agents[pos] = agent
 
-        self.grid.place_agent(agent, agent.position)
 
     def instantiate_model(self):
 
-        self.data_collector = ElasticsearchDataCollector()
-        #self.data_collector = None
+        #self.data_collector = ElasticsearchDataCollector()
+        self.data_collector = CSVDataCollector(prefix="csv/")
         self.register_agent_factory("CONTROLLER",
                                     lambda agent_id, model, properties: controller(agent_id=agent_id, model=model,
                                                                                    properties=properties,
@@ -118,41 +97,5 @@ class SimulationModel(Model):
         scheduler = self.scheduler
         scheduler.run_step(model=self, sim_round=self.time, step=self.dt, progress_widget=None, collect_data=True)
         used_cells = []
-
-        for agent in street_objs:
-            self.grid.remove_agent(agent)
-            self.grid.place_agent(agent,agent.position)
-
-
-        for agent in self.agents:
-            if isinstance(agent, car):
-                self.grid.move_agent(agent,agent.position)
-                used_cells += [agent.position]
-
-        for agent in workshop_objs:
-            self.grid.remove_agent(agent)
-            used_cells += [agent.position]
-            self.grid.place_agent(agent, (agent.position[0], agent.position[1]))
-
-        for agent in charger_objs:
-            self.grid.remove_agent(agent)
-            used_cells += [agent.position]
-            self.grid.place_agent(agent, (agent.position[0], agent.position[1]))
-
-        for agent in self.static_agents.values():
-            self.grid.remove_agent(agent)
-            used_cells += [agent.position]
-            self.grid.place_agent(agent, (agent.position[0], agent.position[1]))
-
-        
-        # write the current sim time into a pickle
-
-        if(self.time>=self.last_write_time+self.time_delta):
-            self.last_write_time+=self.time_delta
-            with open("csv/sim_time.pickle",'wb') as time_file_obj:
-                pickle.dump(self.time,time_file_obj)   
-
         self.time += 1
 
-    
-       
